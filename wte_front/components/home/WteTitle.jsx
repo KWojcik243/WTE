@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styles from "./wtetitle.style";
+import front_logo from "../../assets/images/front_logo.png";
 import {
   View,
   Text,
@@ -9,14 +10,24 @@ import {
   FlatList,
 } from "react-native";
 import { useRouter } from "expo-router";
+import SlideButton from "../SlideButton";
 
 const WteTitle = ({ searchTerm, setSearchTerm, handleClick }) => {
     const router = useRouter();
     const [activeJobType, setActiveJobType] = useState("Full-time");
   
     return (
-        <View>
-            <Text style={styles.appName}>WTE - What to eat</Text>
+        <View style={styles.container}>
+            <View>
+                <Text style={styles.appName}>WTE </Text>
+                <Text style={styles.appName}>What to eat</Text>
+            </View>
+            
+            <Image
+                style={styles.roundedImage}
+                source={front_logo}
+            />
+            <SlideButton />
         </View>
         );
     };
