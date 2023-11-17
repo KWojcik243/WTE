@@ -12,9 +12,8 @@ import {
 import { useRouter } from "expo-router";
 import SlideButton from "../SlideButton";
 
-const WteTitle = ({ searchTerm, setSearchTerm, handleClick }) => {
+const WteTitle = () => {
     const router = useRouter();
-    const [activeJobType, setActiveJobType] = useState("Full-time");
   
     return (
         <View style={styles.container}>

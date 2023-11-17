@@ -1,29 +1,32 @@
 import { useState } from 'react';
-import { View, Text, ScrollView, SafeAreaView, StyleSheet } from 'react-native';
-import { Stack, useRouter } from 'expo-router';
+import { View, Text, ScrollView, Image, SafeAreaView, StyleSheet, TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { WteTitle } from '../components';
+import { useNavigation } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
+import HomeP from './screens/home.jsx';
 
+const Stack = createNativeStackNavigator();
 const Home = () => {
-    const router = useRouter();
 
     return (
-        <LinearGradient
-            colors={['#9D61FE', '#FFBFE9']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 0, y: 1 }}
-            style={{ flex: 1 }}
+        <NavigationContainer independent={true} screenOptions={{
+            headerShown: false,
+        }}>
+            <Stack.Navigator  screenOptions={{
+                    headerShown: false,
+                }}
             >
-            <SafeAreaView >
-                <Stack.Screen
-                options={{
-                    headerShown: false}}/>
-                  
-                <WteTitle/>
-            </SafeAreaView>
-        </LinearGradient>
+                <Stack.Screen screenOptions={{
+                    headerShown: false,
+                }} name="Home" component={HomeP}/>
+            </Stack.Navigator>
+        </NavigationContainer>
+
     );
-}
+};
 
 const styles = StyleSheet.create({
     homeText: {
