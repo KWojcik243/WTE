@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
         width: "100%",
         height: "80%",
         justifyContent: "space-around",
-        marginTop: "25%",
+        marginTop: "25%", 
     },
     appName: {
         fontSize: 60,

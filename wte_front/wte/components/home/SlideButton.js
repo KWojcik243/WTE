@@ -5,17 +5,32 @@ import {
     TouchableOpacity,
     Image,
     FlatList,
+    Button,
 } from "react-native";
 import Animated, {
     Extrapolate,
     interpolate,
     useAnimatedGestureHandler,
     useAnimatedStyle,
+    useEvent,
     useSharedValue,
+    runOnJS,
     withSpring,
 } from "react-native-reanimated";
+import React, { useState, useEffect } from 'react';
 import { PanGestureHandler } from "react-native-gesture-handler";
-const SlideButton = ({ }) => {
+
+
+const SlideButton = ({navigation}) => {
+    const navigateToDailyDiet = () => {
+        navigation.navigate('DailyDiet');
+    }
+    const [change, setChange] = useState(false);
+    useEffect(() => {
+        if (change) {
+          navigation.navigate('DailyDiet');
+        }
+      }, [change, navigation]);
     const X = useSharedValue(10);
     const animatedGestureHandler = useAnimatedGestureHandler({
         onActive: e => {
@@ -30,6 +45,8 @@ const SlideButton = ({ }) => {
                 X.value = withSpring(10);
             } else {
                 X.value = withSpring(185);
+                runOnJS(navigateToDailyDiet)();
+                X.value = withSpring(10);
             }
         },
     });
@@ -37,6 +54,7 @@ const SlideButton = ({ }) => {
         return {transform:[{translateX: X.value}]}
     })
     return (
+        
         <View style={{
             width: 240,
             height: 60,

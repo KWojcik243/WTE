@@ -9,11 +9,9 @@ import {
   Image,
   FlatList,
 } from "react-native";
-import { useRouter } from "expo-router";
-import SlideButton from "../SlideButton";
+import SlideButton from "./SlideButton";
 
-const WteTitle = () => {
-    const router = useRouter();
+const WteTitle = ({ navigation }) => {
   
     return (
         <View style={styles.container}>
@@ -21,12 +19,11 @@ const WteTitle = () => {
                 <Text style={styles.appName}>WTE </Text>
                 <Text style={styles.appName}>What to eat</Text>
             </View>
-            
             <Image
                 style={styles.roundedImage}
                 source={front_logo}
             />
-            <SlideButton />
+            <SlideButton navigation={navigation} />
         </View>
         );
     };
