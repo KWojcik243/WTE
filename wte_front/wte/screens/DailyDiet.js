@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, SafeAreaView, FlatList } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import  ExpandList  from '../components/home/ExpandList';
 import style from "../components/home/wtetitle.style";
@@ -112,34 +112,33 @@ export default function DailyDiet({ navigation }) {
                 <Text style={style.appName}>WTE </Text>
                 <Text style={style.appName}>What to eat</Text>
               </View>
-              <ScrollView>
-                {DATA.map((item) => (
-                    <ExpandList data={item}
-                      key={item.type_meal}
-                    />
-                ))}
-                <TouchableOpacity  
-                style={{
-                  margin: 30,
-                  flex: 1,
-                  height: 70,
-                  width: 70,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  alignSelf: 'center',
-                  borderRadius: 90,
-                  shadowColor: '#000',
-                  shadowOffset: { width: 0, height: 4 },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 10,
-                  elevation: 3,
-                  backgroundColor:'white' }}>
-                  <Icon name={'settings'} size={50} color="black" style={{
-                    
-                  }}
-                  onPress={ ()=>setVisible(true)} />
-                </TouchableOpacity>
-              </ScrollView>
+              <FlatList
+                data={DATA}
+                renderItem={({ item }) => (
+                    <ExpandList data={item} key={item.type_meal} />
+                  )}
+                keyExtractor={(item) => item.type_meal}
+                ListFooterComponent={() => (
+                  <TouchableOpacity
+                    style={{
+                      margin: 30,
+                      height: 70,
+                      width: 70,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      alignSelf: 'center',
+                      borderRadius: 90,
+                      shadowColor: '#000',
+                      shadowOffset: { width: 0, height: 4 },
+                      shadowOpacity: 0.25,
+                      shadowRadius: 10,
+                      elevation: 3,
+                      backgroundColor: 'white',
+                    }}>
+                    <Icon name={'settings'} size={50} color="black" onPress={() => setVisible(true)} />
+                  </TouchableOpacity>
+                )}
+              />
               <ModalSettings visible={visible} closeModal={closeModal} data={DATA}></ModalSettings>
             </View>
         </LinearGradient>
