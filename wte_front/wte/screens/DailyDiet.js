@@ -1,11 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import  ExpandList  from '../components/home/ExpandList';
 import style from "../components/home/wtetitle.style";
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
+import ModalSettings from '../components/home/ModalSettings';
 
 export default function DailyDiet({ navigation }) {
+  const [visible, setVisible] = useState(false);
+  const closeModal = () => {
+    setVisible(false);
+  };
   const DATA = [
     {
         type_meal: 'Breakfast',
@@ -29,6 +35,69 @@ export default function DailyDiet({ navigation }) {
             { id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63', title: 'Mixed Greens' },
         ],
     },
+    {
+      type_meal: 'Lunch',
+      title: 'Chicken Salad',
+      ingredients: [
+          { id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba', title: 'Grilled Chicken' },
+          { id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63', title: 'Mixed Greens' },
+      ],
+  },
+  {
+    type_meal: 'Lunch',
+    title: 'Chicken Salad',
+    ingredients: [
+        { id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba', title: 'Grilled Chicken' },
+        { id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63', title: 'Mixed Greens' },
+    ],
+},
+{
+  type_meal: 'Lunch',
+  title: 'Chicken Salad',
+  ingredients: [
+      { id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba', title: 'Grilled Chicken' },
+      { id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63', title: 'Mixed Greens' },
+  ],
+},
+{
+  type_meal: 'Lunch',
+  title: 'Chicken Salad',
+  ingredients: [
+      { id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba', title: 'Grilled Chicken' },
+      { id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63', title: 'Mixed Greens' },
+  ],
+},
+{
+  type_meal: 'Lunch',
+  title: 'Chicken Salad',
+  ingredients: [
+      { id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba', title: 'Grilled Chicken' },
+      { id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63', title: 'Mixed Greens' },
+  ],
+},
+{
+  type_meal: 'Lunch',
+  title: 'Chicken Salad',
+  ingredients: [
+      { id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba', title: 'Grilled Chicken' },
+      { id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63', title: 'Mixed Greens' },
+  ],
+},{
+  type_meal: 'Lunch',
+  title: 'Chicken Salad',
+  ingredients: [
+      { id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba', title: 'Grilled Chicken' },
+      { id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63', title: 'Mixed Greens' },
+  ],
+},
+{
+  type_meal: 'Lunch',
+  title: 'Chicken Salad',
+  ingredients: [
+      { id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba', title: 'Grilled Chicken' },
+      { id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63', title: 'Mixed Greens' },
+  ],
+},
 ];
   return (
     <View>
@@ -42,7 +111,7 @@ export default function DailyDiet({ navigation }) {
               <View style={{ marginTop: 75, marginBottom: 40 }}>
                 <Text style={style.appName}>WTE </Text>
                 <Text style={style.appName}>What to eat</Text>
-            </View>
+              </View>
               <ScrollView>
                 {DATA.map((item) => (
                     <ExpandList data={item}
@@ -67,9 +136,11 @@ export default function DailyDiet({ navigation }) {
                   backgroundColor:'white' }}>
                   <Icon name={'settings'} size={50} color="black" style={{
                     
-                  }} />
+                  }}
+                  onPress={ ()=>setVisible(true)} />
                 </TouchableOpacity>
               </ScrollView>
+              <ModalSettings visible={visible} closeModal={closeModal} data={DATA}></ModalSettings>
             </View>
         </LinearGradient>
       </View>
