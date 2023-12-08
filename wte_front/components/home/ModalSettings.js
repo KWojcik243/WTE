@@ -69,19 +69,18 @@ const ModalSettings = (props) => {
                     </View>
                     <View style={{maxHeight: '50%', flex: 1, marginBottom: 20, paddingRight:20, paddingLeft: 20,}}>
                         <ScrollView>
-                            {props.data.map((item) => (
-                                <View style={style.row}>
-                                        <Text style={{
-                                            fontSize: 25,
-                                            fontFamily: FONT.ubuntu_r,
-                                        }}>
-                                            {item.type_meal}
-                                        </Text>
-                                        <TouchableOpacity>
-                                            <IconM name={'refresh'} size={50} color="black"/>
-                                        </TouchableOpacity>
-                                
-                                </View>
+                        {props.data.map((item) => (
+                            <View style={style.row} key={item.meal_category}>
+                                <Text style={{
+                                fontSize: 25,
+                                fontFamily: FONT.ubuntu_r,
+                                }}>
+                                    {item.meal_category}
+                                </Text>
+                                <TouchableOpacity onPress={() => handleRefresh(item.meal_category)}>
+                                    <IconM name={'refresh'} size={50} color="black" />
+                                </TouchableOpacity>
+                            </View>
                             ))}
                         </ScrollView>
                     </View>

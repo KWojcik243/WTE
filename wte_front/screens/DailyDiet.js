@@ -1,104 +1,132 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, SafeAreaView, FlatList } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import  ExpandList  from '../components/home/ExpandList';
 import style from "../components/home/wtetitle.style";
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import ModalSettings from '../components/home/ModalSettings';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+
 
 export default function DailyDiet({ navigation }) {
   const [visible, setVisible] = useState(false);
+  const [mealCategories, setMealCategories] = useState(['Breakfast', 'Lunch']);
+  const [data, setData] = useState();
   const closeModal = () => {
     setVisible(false);
   };
-  const DATA = [
-    {
-        type_meal: 'Breakfast',
-        title: 'Potatoes with cheese and eggs',
-        ingredients: [
-            { id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba', title: 'First Itemddddddddddddddddddddddddd' },
-            { id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63', title: 'Second Itemddddddddddddddddddddddddddddddd' },
-            { id: 'bd7acbea-c1b1-346c2-aed5-3ad53abb28ba', title: 'First Item' },
-            { id: '3ac68afc-c605-482d3-a4f8-fbd91aa97f63', title: 'Second Item' },
-            { id: 'bd7acbea-44c1b1-346c2-aed5-3ad53abb28ba', title: 'First Item' },
-            { id: '3ac68afc-c605-482d3-32a4f8-fbd91aa97f63', title: 'Second Item' },
-            { id: 'bd7acbea-c1b1-3446c2-aed5-3ad53abb28ba', title: 'First Item' },
-            { id: '3ac68afc-c605-482d3-a564f8-fbd91aa97f63', title: 'Second Item' },
-        ],
-    },
-    {
-        type_meal: 'Lunch',
-        title: 'Chicken Salad',
-        ingredients: [
-            { id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba', title: 'Grilled Chicken' },
-            { id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63', title: 'Mixed Greens' },
-        ],
-    },
-    {
-      type_meal: 'Lunch',
-      title: 'Chicken Salad',
-      ingredients: [
-          { id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba', title: 'Grilled Chicken' },
-          { id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63', title: 'Mixed Greens' },
-      ],
-  },
-  {
-    type_meal: 'Lunch',
-    title: 'Chicken Salad',
-    ingredients: [
-        { id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba', title: 'Grilled Chicken' },
-        { id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63', title: 'Mixed Greens' },
-    ],
-},
-{
-  type_meal: 'Lunch',
-  title: 'Chicken Salad',
-  ingredients: [
-      { id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba', title: 'Grilled Chicken' },
-      { id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63', title: 'Mixed Greens' },
-  ],
-},
-{
-  type_meal: 'Lunch',
-  title: 'Chicken Salad',
-  ingredients: [
-      { id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba', title: 'Grilled Chicken' },
-      { id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63', title: 'Mixed Greens' },
-  ],
-},
-{
-  type_meal: 'Lunch',
-  title: 'Chicken Salad',
-  ingredients: [
-      { id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba', title: 'Grilled Chicken' },
-      { id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63', title: 'Mixed Greens' },
-  ],
-},
-{
-  type_meal: 'Lunch',
-  title: 'Chicken Salad',
-  ingredients: [
-      { id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba', title: 'Grilled Chicken' },
-      { id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63', title: 'Mixed Greens' },
-  ],
-},{
-  type_meal: 'Lunch',
-  title: 'Chicken Salad',
-  ingredients: [
-      { id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba', title: 'Grilled Chicken' },
-      { id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63', title: 'Mixed Greens' },
-  ],
-},
-{
-  type_meal: 'Lunch',
-  title: 'Chicken Salad',
-  ingredients: [
-      { id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba', title: 'Grilled Chicken' },
-      { id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63', title: 'Mixed Greens' },
-  ],
-},
-];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try{
+        const savedUserCategories = await AsyncStorage.getItem('mealCategories');
+        if(savedUserCategories !== null) {
+          setMealCategories(savedUserCategories);
+        }
+      } catch (error) {
+        console.error('Error retrieving data from AsyncStorage:', error);
+      }
+    };
+    fetchData();
+    mealUrl = 'http://10.0.2.2:8000/meals/' + mealCategories.join(',') 
+    axios.get(mealUrl)
+      .then(response => {
+        setData(response.data);
+        console.log('Server response:', data);
+      })
+      .catch(error => {
+        console.error('There was a problem with the request:', error);
+      });
+  }, []);
+//   const DATA = [
+//     {
+//         type_meal: 'Breakfast',
+//         title: 'Potatoes with cheese and eggs',
+//         ingredients: [
+//             { id: 'bd7acbea-dc1b1-46c2-aed5-3ad53abb28ba', title: 'First Itemddddddddddddddddddddddddd' },
+//             { id: '3ac68afc-c605-d48d3-a4f8d-fbd91aa97f63', title: 'Second Itemddddddddddddddddddddddddddddddd' },
+//             { id: 'bd7acbea-c1b1-346c2-aed5-3ad53ddabb28ba', title: 'First Item' },
+//             { id: '3ac68afc-c605-482d3d-a4f8-fbd91aa97f63', title: 'Second Item' },
+//             { id: 'bd7acbea-44c1b1-346c2-aedd5-3ad53abb28ba', title: 'First Item' },
+//             { id: '3ac68afc-c605-482d3-32a4df8-fbd91aa97f63', title: 'Second Item' },
+//             { id: 'bd7acbea-c1b1-3446c2-aedd5-3ad53abb28ba', title: 'First Item' },
+//             { id: '3ac68afc-c605-482d3-a56d4f8-fbd91aa97f63', title: 'Second Item' },
+//         ],
+//     },
+//     {
+//         type_meal: 'Lunch',
+//         title: 'Chicken Salad',
+//         ingredients: [
+//             { id: 'bd7acbea-c1b1-46ddddc2-aed5-3ad53abb28ba', title: 'Grilled Chicken' },
+//             { id: '3ac68afc-c60dddd5-48d3-a4f8-fbd91aa97f63', title: 'Mixed Greens' },
+//         ],
+//     },
+// //     {
+// //       type_meal: 'Lunch',
+// //       title: 'Chicken Salad',
+// //       ingredients: [
+// //           { id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba', title: 'Grilled Chicken' },
+// //           { id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63', title: 'Mixed Greens' },
+// //       ],
+// //   },
+// //   {
+// //     type_meal: 'Lunch',
+// //     title: 'Chicken Salad',
+// //     ingredients: [
+// //         { id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba', title: 'Grilled Chicken' },
+// //         { id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63', title: 'Mixed Greens' },
+// //     ],
+// // },
+// // {
+// //   type_meal: 'Lunch',
+// //   title: 'Chicken Salad',
+// //   ingredients: [
+// //       { id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba', title: 'Grilled Chicken' },
+// //       { id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63', title: 'Mixed Greens' },
+// //   ],
+// // },
+// // {
+// //   type_meal: 'Lunch',
+// //   title: 'Chicken Salad',
+// //   ingredients: [
+// //       { id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba', title: 'Grilled Chicken' },
+// //       { id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63', title: 'Mixed Greens' },
+// //   ],
+// // },
+// // {
+// //   type_meal: 'Lunch',
+// //   title: 'Chicken Salad',
+// //   ingredients: [
+// //       { id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba', title: 'Grilled Chicken' },
+// //       { id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63', title: 'Mixed Greens' },
+// //   ],
+// // },
+// // {
+// //   type_meal: 'Lunch',
+// //   title: 'Chicken Salad',
+// //   ingredients: [
+// //       { id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba', title: 'Grilled Chicken' },
+// //       { id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63', title: 'Mixed Greens' },
+// //   ],
+// // },{
+// //   type_meal: 'Lunch',
+// //   title: 'Chicken Salad',
+// //   ingredients: [
+// //       { id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba', title: 'Grilled Chicken' },
+// //       { id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63', title: 'Mixed Greens' },
+// //   ],
+// // },
+// // {
+// //   type_meal: 'Lunch',
+// //   title: 'Chicken Salad',
+// //   ingredients: [
+// //       { id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba', title: 'Grilled Chicken' },
+// //       { id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63', title: 'Mixed Greens' },
+// //   ],
+// // },
+// ];
   return (
     <View>
         <LinearGradient
@@ -113,11 +141,10 @@ export default function DailyDiet({ navigation }) {
                 <Text style={style.appName}>What to eat</Text>
               </View>
               <FlatList
-                data={DATA}
+                data={data}
                 renderItem={({ item }) => (
-                    <ExpandList data={item} key={item.type_meal} />
+                    <ExpandList data={item} key={item.meal_category} />
                   )}
-                keyExtractor={(item) => item.type_meal}
                 ListFooterComponent={() => (
                   <TouchableOpacity
                     style={{
@@ -139,7 +166,7 @@ export default function DailyDiet({ navigation }) {
                   </TouchableOpacity>
                 )}
               />
-              <ModalSettings visible={visible} closeModal={closeModal} data={DATA}></ModalSettings>
+              <ModalSettings visible={visible} closeModal={closeModal} data={data}></ModalSettings>
             </View>
         </LinearGradient>
       </View>

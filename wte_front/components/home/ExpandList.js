@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/Entypo';
 const renderIngredient = ({ item }) => (
     <View style={styles.ingredientContainer}>
         <Text style={styles.dot}>•</Text>
-        <Text style={styles.ingredient}>{item.title}</Text>
+        <Text style={styles.ingredient}>{item}</Text>
     </View>
 );
 
@@ -30,7 +30,7 @@ const ExpandList = ({ data }) => {
                 duration: 150,
                 useNativeDriver: false,
             }).start();
-        }, [isExpanded, height, data.ingredients]);
+        }, [isExpanded, height, data.meal_ingredients]);
 
         return (
             <Animated.View
@@ -48,9 +48,9 @@ const ExpandList = ({ data }) => {
                 }}
             >
                 <FlatList
-                    data={data.ingredients}
+                    data={data.meal_ingredients}
                     renderItem={renderIngredient}
-                    keyExtractor={(item) => item.id}
+                    // keyExtractor={(item) => item.id}
                     numColumns={2}
                     contentContainerStyle={styles.container}
                     columnWrapperStyle={{ justifyContent: 'space-between' }}
@@ -61,7 +61,7 @@ const ExpandList = ({ data }) => {
 
     return (
             <View>
-                <Text style={{ fontSize: 25, fontFamily: FONT.regular, color: "white", textAlign: "left", maxWidth: 300 }}>{data.type_meal}</Text>
+                <Text style={{ fontSize: 25, fontFamily: FONT.regular, color: "white", textAlign: "left", maxWidth: 300 }}>{data.meal_category}</Text>
                 <TouchableOpacity
                     onPress={() => {
                         setIsExpanded(!isExpanded);
@@ -69,15 +69,15 @@ const ExpandList = ({ data }) => {
                     }}
                     style={styles.toggle}
                 >
-                    <Text numberOfLines={1} ellipsizeMode="tail" style={styles.toggleText}>{data.title}</Text>
+                    <Text numberOfLines={1} ellipsizeMode="tail" style={styles.toggleText}>{data.meal_name}</Text>
                     <Icon name={iconName} size={30} color="black" />
                 </TouchableOpacity>
                 <ExpandableView />
                 <FlatList
-                    data={data.ingredients}
+                    data={data.meal_ingredients}
                     renderItem={renderIngredient}
                     onLayout={handleFlatListLayout}
-                    keyExtractor={(item) => item.id}
+                    // keyExtractor={(item) => item.id}
                     numColumns={2}
                     contentContainerStyle={styles.container}
                     columnWrapperStyle={{ justifyContent: 'space-between' }}
