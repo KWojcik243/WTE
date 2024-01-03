@@ -1,6 +1,6 @@
 
 from rest_framework import serializers
-from .models import Meal, Ingredient
+from .models import Category, Meal, Ingredient
 class MealSerializer(serializers.ModelSerializer):
     class Meta:
         model = Meal
@@ -16,3 +16,8 @@ class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
         fields = ('name',)
+class CategorySerializer(serializers.ModelSerializer):
+    item = serializers.CharField(source='name')
+    class Meta:
+        model = Category
+        fields = ('id',  'item')

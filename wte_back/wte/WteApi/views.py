@@ -1,5 +1,5 @@
 from .models import Meal, Category, Ingredient
-from .serializers import MealSerializer, IngredientSerializer, MealNameSerializer
+from .serializers import CategorySerializer, MealSerializer, IngredientSerializer, MealNameSerializer
 from django.http import JsonResponse
 import random
 
@@ -7,6 +7,12 @@ def meals(request):
     if request.method == 'GET':
         meals = Meal.objects.all()
         serializer = MealSerializer(meals, many=True)
+        return JsonResponse(serializer.data, safe=False)
+    
+def categories(request):
+    if request.method == 'GET':
+        category = Category.objects.all()
+        serializer = CategorySerializer(category, many=True)
         return JsonResponse(serializer.data, safe=False)
     
 def random_meal(request, category_request):
@@ -25,9 +31,8 @@ def random_meal(request, category_request):
 def random_meals(request, categories_request):
     if request.method == 'GET':
         categories = categories_request.split(',')
-        categories = Category.objects.filter(name__in=categories)
+        categories = Category.objects.filter(id__in=categories)
         random_meals = []
-        ingredients ={}
         for category in categories:
             meals_in_category = Meal.objects.filter(category=category)
             random_meal = random.choice(meals_in_category)
